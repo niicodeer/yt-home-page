@@ -2,6 +2,7 @@ import yticon from "../assets/youtube_icon.png";
 import { ArrowLeft, Bell, Menu, Mic, Search, Upload, User } from "lucide-react";
 import Button from "../components/Button";
 import { useState } from "react";
+import { useSidebarContext } from "../context/sidebarContext";
 
 export default function Header() {
   const [showSearchBar, setSetshowSearchBar] = useState(false);
@@ -9,21 +10,7 @@ export default function Header() {
   return (
     <div className="flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4">
       {/* left side */}
-      <div
-        className={`flex gap-4 items-center flex-shrink-0 ${
-          showSearchBar ? "hidden" : "flex"
-        }`}
-      >
-        <Button variant={"ghost"} size={"icon"}>
-          <Menu />
-        </Button>
-        <a href="/">
-          <div className="flex justify-center gap-2 items-center">
-            <img src={yticon} alt="yt logo" className="h-7" />
-            <p className="text-black font-bold">TypeTube</p>
-          </div>
-        </a>
-      </div>
+      <HeaderFirstSection hidden={showSearchBar} />
       {/* middle side / search bar */}
       <form
         className={`gap-4 flex-grow justify-center ${
@@ -83,6 +70,33 @@ export default function Header() {
           <User />
         </Button>
       </div>
+    </div>
+  );
+}
+
+type HeaderFirstSectionProps = {
+  hidden?: boolean;
+};
+
+export function HeaderFirstSection({
+  hidden = false,
+}: HeaderFirstSectionProps) {
+  const { toggle } = useSidebarContext();
+  return (
+    <div
+      className={`flex gap-4 items-center flex-shrink-0 ${
+        hidden ? "hidden" : "flex"
+      }`}
+    >
+      <Button variant={"ghost"} size={"icon"} onClick={toggle}>
+        <Menu />
+      </Button>
+      <a href="/">
+        <div className="flex justify-center gap-2 items-center">
+          <img src={yticon} alt="yt logo" className="h-7" />
+          <p className="text-black font-bold">TypeTube</p>
+        </div>
+      </a>
     </div>
   );
 }
